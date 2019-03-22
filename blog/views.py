@@ -1,7 +1,9 @@
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.paginator import Paginator
 from django.conf import settings
-from .models import Blog, BlogType, ReadNum
+
+from .models import Blog, BlogType
+from read_statistics.utils import read_statistics_once_read
 
 def get_blog_list_common_data(blogs_all_list, request):
     paginator = Paginator(blogs_all_list, settings.EACH_PAGE_BLOGS_NUMBER)  # 每2篇进行分页
@@ -48,22 +50,14 @@ def blog_list(request):
 
 def blog_detail(request, blog_pk):
     blog = get_object_or_404(Blog, pk=blog_pk)
-    if not request.COOKIES.get('blog_{}_read'.format(blog_pk)):
-        if ReadNum.objects.filter(blog=blog).count():
-            # 存在记录
-            readnum = ReadNum.objects.get(blog=blog)
-        else:
-            # 不存在对应的记录
-            readnum = ReadNum(blog=blog)
-        readnum.read_num += 1
-        readnum.save()
+    read_cookie_key = read_statistics_once_read(request, blog)
 
     context = {}
     context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()
     context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()
     context['blog'] = blog
     response = render_to_response('blog/blog_detail.html', context)  # 响应
-    response.set_cookie('blog_{}_read'.format(blog_pk), 'true')
+    response.set_cookie(read_cookie_key.format(blog_pk), 'true')  # 阅读cookie标记
     return response
 
 def blogs_with_type(request, blog_type_pk):

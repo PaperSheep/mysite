@@ -22,11 +22,19 @@ ul.blog-info-description {
 }
 ul.blog-info-description li {
     display: inline-block;
-    margin-right: 2em;
+    margin-right: 1em;
 }
 div.blog-content {
     text-indent: 2em;
 }
 div.blog-more {
-    margin-top: 5em;
+    margin-top: 1em;
+}
+
+div.comment-area {
+    margin-top: 2em;
+}
+h3.comment-area-title {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 0.4em;
 }

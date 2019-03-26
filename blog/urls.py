@@ -9,7 +9,3 @@ urlpatterns = [
     path('date/<int:year>/<int:month>', views.blogs_with_date, name="blogs_with_date"),
 ]
 
-
-
-
-

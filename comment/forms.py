@@ -7,9 +7,9 @@ from ckeditor.widgets import CKEditorWidget
 class CommentForm(forms.Form):
     content_type = forms.CharField(widget=forms.HiddenInput)
     object_id = forms.IntegerField(widget=forms.HiddenInput)
-    text = forms.CharField(widget=CKEditorWidget(config_name='comment_ckeditor'), label=False)
+    text = forms.CharField(widget=CKEditorWidget(config_name='comment_ckeditor'),
+                           error_messages={'required': '评论内容不能为空'})
 
-    # *args任意类型的参数，**kwargs任意字段的参数(把 kwargs 当成字典来看)
     def __init__(self, *args, **kwargs):
         if 'user' in kwargs:
             self.user = kwargs.pop('user')
@@ -24,7 +24,7 @@ class CommentForm(forms.Form):
 
         # 评论对象验证
         content_type = self.cleaned_data['content_type']
-        object_id = self.cleaned_data['content_id']
+        object_id  =  self.cleaned_data['object_id']
         try:
             model_class = ContentType.objects.get(model=content_type).model_class()
             model_obj = model_class.objects.get(pk=object_id)
@@ -33,7 +33,4 @@ class CommentForm(forms.Form):
             raise forms.ValidationError('评论对象不存在')
 
         return self.cleaned_data
-
-
-
-
+        

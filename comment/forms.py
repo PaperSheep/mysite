@@ -28,7 +28,7 @@ class CommentForm(forms.Form):
         object_id  =  self.cleaned_data['object_id']
         try:
             model_class = ContentType.objects.get(model=content_type).model_class()
-            model_obj = model_class.objects.get(pk=object_id)
+            model_obj = model_class.objects.get(pk=object_id)  # 获取一条博客的数据
             self.cleaned_data['content_object'] = model_obj
         except ObjectDoesNotExist:
             raise forms.ValidationError('评论对象不存在')

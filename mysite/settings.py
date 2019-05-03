@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'blog',  # 我创建的app
     'read_statistics',  # 我创建的app
     'comment',  # 我创建的app
+    'likes',  # 我创建的app
 ]
 
 MIDDLEWARE = [
@@ -137,7 +138,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # 配置ckeditor
 CKEDITOR_UPLOAD_PATH = 'upload/'
-
 CKEDITOR_CONFIGS = {
     'default': {},
     'comment_ckeditor': {
@@ -164,6 +164,6 @@ EACH_PAGE_BLOGS_NUMBER = 7
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'my_cache_table',
+        'LOCATION': 'my_cache_table',  # 数据库存储缓存
     }
 }

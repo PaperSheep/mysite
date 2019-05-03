@@ -5,11 +5,13 @@ from django.http import JsonResponse
 from .models import Comment
 from .forms import CommentForm
 
-# Create your views here.
+
 def update_comment(request):
+    if request.method == 'GET':
+        return redirect(reverse('home'))
+    # request.META 包含了所有本次HTTP请求的Header信息以字典的形式返回
     referer = request.META.get('HTTP_REFERER', reverse('home'))
     comment_form = CommentForm(request.POST, user=request.user)
-    data = {}
 
     if comment_form.is_valid():
         # 检查通过，保存数据
@@ -24,8 +26,9 @@ def update_comment(request):
             comment.parent = parent
             comment.reply_to = parent.user
         comment.save()
-        # 返回数据
 
+        # 返回数据（主要给Ajax来刷新数据）
+        data = {}
         data['status'] = 'SUCCESS'
         data['username'] = comment.user.username
         data['comment_time'] = comment.comment_time.timestamp()

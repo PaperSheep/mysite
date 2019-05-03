@@ -41,6 +41,7 @@ class RegForm(forms.Form):
     def clean_username(self):
         username = self.cleaned_data['username']
         if User.objects.filter(username=username).exists():
+            # 抛出的错误信息会存在 clean_* 的 * 对应的对象里面
             raise forms.ValidationError('用户名已存在')
         return username
 

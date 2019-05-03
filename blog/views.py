@@ -8,17 +8,17 @@ from read_statistics.utils import read_statistics_once_read
 # from comment.forms import CommentForm
 
 def get_blog_list_common_data(blogs_all_list, request):
-    paginator = Paginator(blogs_all_list, settings.EACH_PAGE_BLOGS_NUMBER)  # 每2篇进行分页
-    page_num = request.GET.get('page', 1)  # 获取url的页面参数 （GET请求）
-    page_of_blogs = paginator.get_page(page_num)
+    paginator = Paginator(blogs_all_list, settings.EACH_PAGE_BLOGS_NUMBER)  # 每7篇进行分页
+    page_num = request.GET.get('page', 1)  # 获取url的页面参数 （GET请求）如果没有page的值则返回1
+    page_of_blogs = paginator.get_page(page_num)  # 获取某一页的数据
     current_page_num = page_of_blogs.number  # 获取当前页码
-    # 获取当前页前后页码
+    # 获取当前页面前后两页页码
     page_range = list(range(max(current_page_num - 2, 1), current_page_num)) + \
                  list(range(current_page_num, min(current_page_num + 2, paginator.num_pages) + 1))
     # 加上省略页码标记
     if page_range[0] - 1 >= 2:
         page_range.insert(0, '...')
-    if paginator.num_pages-page_range[-1] >= 2:
+    if paginator.num_pages - page_range[-1] >= 2:
         page_range.append('...')
     # 加上第一页和最后一页
     if page_range[0] != 1:
@@ -27,15 +27,14 @@ def get_blog_list_common_data(blogs_all_list, request):
         page_range.append(paginator.num_pages)
 
     # 获取日期对应的博客数量
-    blog_dates = Blog.objects.dates('created_time', 'month', order="DESC")
-    print(blog_dates)
+    blog_dates = Blog.objects.dates('created_time', 'month', order="DESC")  # 通过created_time字段返回所有时间值中非重复的年／月列表
     blog_dates_dic = {}
     for blog_date in blog_dates:
         blog_count = Blog.objects.filter(created_time__year=blog_date.year, created_time__month=blog_date.month).count()
         blog_dates_dic[blog_date] = blog_count
 
     context = {}
-    context['blogs'] = page_of_blogs.object_list
+    # context['blogs'] = page_of_blogs.object_list
     context['page_of_blogs'] = page_of_blogs
     context['page_range'] = page_range
     context['blog_types'] = BlogType.objects.all()
@@ -68,6 +67,7 @@ def blogs_with_date(request, year, month):
     return render(request, 'blog/blogs_with_date.html', context)
 
 def blog_detail(request, blog_pk):
+    # 由前端提供的数据最好使用get_object_or_404
     blog = get_object_or_404(Blog, pk=blog_pk)
     read_cookie_key = read_statistics_once_read(request, blog)
     # blog_content_type = ContentType.objects.get_for_model(blog)

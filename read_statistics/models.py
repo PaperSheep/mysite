@@ -4,7 +4,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
-# Create your models here.
+# 记录总的阅读数
 class ReadNum(models.Model):
     read_num = models.IntegerField(default=0)
 
@@ -21,6 +21,7 @@ class ReadNumExpandMethod():
         except exceptions.ObjectDoesNotExist:
             return 0
 
+# 记录某天某条博客的总阅读数量
 class ReadDetail(models.Model):
     date = models.DateField(default=timezone.now)
     read_num = models.IntegerField(default=0)

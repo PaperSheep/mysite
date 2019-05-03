@@ -15,7 +15,7 @@ def get_comment_count(obj):
 def get_comment_form(obj):
     content_type = ContentType.objects.get_for_model(obj)
     data = {}
-    data['content_type'] = content_type.model
+    data['content_type'] = content_type.model  # 'content_type': 'blog'
     data['object_id'] = obj.pk
     data['reply_comment_id'] = 0
     form = CommentForm(initial=data)

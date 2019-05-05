@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'ckeditor',  # 用于富文本编辑的
-    'ckeditor_uploader',  # 用于富文本编辑上传用的
+    'ckeditor_uploader',  # 用于富文本编辑上传用的(第三方包)
     'blog',  # 我创建的app
     'read_statistics',  # 我创建的app
     'comment',  # 我创建的app

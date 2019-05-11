@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from .models import Blog, BlogType
 from read_statistics.utils import read_statistics_once_read
-from mysite.forms import LoginForm
+# from user.forms import LoginForm
 
 
 def get_blog_list_common_data(blogs_all_list, request):
@@ -76,7 +76,7 @@ def blog_detail(request, blog_pk):
     context['previous_blog'] = Blog.objects.filter(created_time__gt=blog.created_time).last()
     context['next_blog'] = Blog.objects.filter(created_time__lt=blog.created_time).first()
     context['blog'] = blog
-    context['login_form'] = LoginForm()
+    # context['login_form'] = LoginForm()
 
     response = render(request, 'blog/blog_detail.html', context)  # 响应
     response.set_cookie(read_cookie_key.format(blog_pk), 'true')  # 阅读cookie标记

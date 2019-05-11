@@ -11,9 +11,7 @@ urlpatterns = [
     path('blog/', include('blog.urls')),
     path('comment/', include('comment.urls')),
     path('likes/', include('likes.urls')),
-    path('login/', views.login, name='login'),
-    path('login_for_medal/', views.login_for_medal, name='login_for_medal'),
-    path('register/', views.register, name='register'),
+    path('user/', include('user.urls')),
 ]
 # 使用媒体文件
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

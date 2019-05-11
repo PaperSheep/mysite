@@ -37,13 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+    # 第三方的插件
     'ckeditor',  # 用于富文本编辑的
     'ckeditor_uploader',  # 用于富文本编辑上传用的(第三方包)
-    'blog',  # 我创建的app
-    'read_statistics',  # 我创建的app
-    'comment',  # 我创建的app
-    'likes',  # 我创建的app
+    # 自定义创建的app
+    'blog',
+    'read_statistics',
+    'comment',
+    'likes',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +73,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # 自定义的模板变量
+                'user.context_processors.login_modal_form',
             ],
         },
     },
